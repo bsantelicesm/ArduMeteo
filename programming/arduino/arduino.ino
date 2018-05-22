@@ -9,7 +9,7 @@ byte Ethernet::buffer[700]; //MAC, IP, y tamaño de buffer para ENC28J60.
 #include <SparkFunCCS811.h> //Libreria CCS811
 #include <DHT.h> //Libreria DHT11
 
-#define DHTPIN 2
+#define DHTPIN 4
 #define DHTTYPE DHT11
 DHT TempHum(DHTPIN, DHTTYPE); //Definir pin y tipo de DHT, incializar servicio.
 
@@ -23,6 +23,10 @@ MPL3115A2 Barometro; //Crear instancia de presion barometrica.
 const int valoresInternosViento[] = {786, 406, 461, 84, 84, 92, 66, 184, 127, 287, 244, 631, 600, 946, 827, 979, 702};
 const float cardinal[] = {0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5}; //Traducción de valores de veleta.
 
+bool primerGatilloViento = true;
+
+int tInicial = 0;
+
 float Temperatura;
 float Humedad;
 float Presion;
@@ -33,8 +37,13 @@ float VelViento;
 int CO2;
 int TVOC; //Definir todas las variables a utilizar. Se hace en esta instancia porque de lo contrario la página web no sabe de que estamos hablando.
 
+int pinAnemometro = 2;
+
 void setup() {
 
+  pinMode(pinAnemometro, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pinAnemometro), viento, FALLING); //gatillo para medir velocidad de viento.
+  
   pinMode(STATUSLED, OUTPUT);
   
   Serial.begin(9600); //Inicializar comunicacion serial USB a 9600 bits por segundo.
@@ -124,5 +133,21 @@ void loop() {
   digitalWrite(STATUSLED, LOW);
 
   ether.httpServerReply(homePage()); // se envia página Web
+}
+
+void viento() {
+  if(primerGatilloViento == true) { //gatillo para viento
+    tInicial = millis(); //tomar tiempo inicial en la primera instancia del anemómetro
+    primerGatilloViento = false; //declarar que ya no es el primer gatillo.
+  }
+  else {
+    int deltaT = millis() - tInicial; //tomar la diferencia de tiempo entre ambos gatillos.
+    VelViento = (deltaT / 1000) / 2.4; //toma el tiempo entre gatillos en segundos, y lo multiplica por el número mágico de la hoja de datos del anemómetro para obtener la velocidad en km/h.
+    primerGatilloViento = true; //reinicia el sistema.
+  }
+}
+
+void lluvia() {
+  
 }
 
