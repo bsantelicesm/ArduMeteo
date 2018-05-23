@@ -25,7 +25,8 @@ const float cardinal[] = {0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 
 
 bool primerGatilloViento = true;
 
-int tInicial = 0;
+unsigned long tInicial = 0;
+unsigned long cuentaVolcados = 0;
 
 float Temperatura;
 float Humedad;
@@ -38,11 +39,14 @@ int CO2;
 int TVOC; //Definir todas las variables a utilizar. Se hace en esta instancia porque de lo contrario la página web no sabe de que estamos hablando.
 
 int pinAnemometro = 2;
+int pinPluviometro = 3;
 
 void setup() {
 
   pinMode(pinAnemometro, INPUT);
+  pinMode(pinPluviometro, INPUT);
   attachInterrupt(digitalPinToInterrupt(pinAnemometro), viento, FALLING); //gatillo para medir velocidad de viento.
+  attachInterrupt(digitalPinToInterrupt(pinPluviometro), lluvia, FALLING); //gatillo para medir precipitación.
   
   pinMode(STATUSLED, OUTPUT);
   
@@ -91,17 +95,9 @@ static word homePage() {
       "Content-Type: text/htmlrnPragma: no-cachernRefresh: 60\r\n\r\n"
       "<html><head><title>Estación Meteorológica</title></head>"
       "<body>"
-      "<p>$D"
-      "$D"
-      "$D"
-      "$D"
-      "$D"
-      "$D"
-      "$L"
-      "$L"
-      "$L</p>"
+      "<p>$D, $D, $D, $D, $D, $D, $L, $L</p>"
       "</body></html>"      
-      ),Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC);
+      ),Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC); //Valores a transmitir.
      
   return bfill.position(); //Página web. La verdad no tengo idea como funciona esto, lo copié desde naylampmechatronics.com y lo dejo ser.
 }
@@ -141,13 +137,14 @@ void viento() {
     primerGatilloViento = false; //declarar que ya no es el primer gatillo.
   }
   else {
-    int deltaT = millis() - tInicial; //tomar la diferencia de tiempo entre ambos gatillos.
-    VelViento = (deltaT / 1000) / 2.4; //toma el tiempo entre gatillos en segundos, y lo multiplica por el número mágico de la hoja de datos del anemómetro para obtener la velocidad en km/h.
+    unsigned long deltaT = millis() - tInicial; //tomar la diferencia de tiempo entre ambos gatillos.
+    VelViento = (deltaT / 1000) / 2.4; //toma el tiempo entre gatillos en segundos, y lo divide por el número mágico de la hoja de datos del anemómetro para obtener la velocidad en km/h.
     primerGatilloViento = true; //reinicia el sistema.
   }
 }
 
 void lluvia() {
-  
+ cuentaVolcados++; //cada vez que el gatillo lluvia es llamado suma uno al cuenta volcados. el overflow se gatilla aproximadamente a los 1200km de precipitaciones, lo cual debería tomar unos 10k años.
+ Precip = cuentaVolcados * 0.2794;
 }
 
