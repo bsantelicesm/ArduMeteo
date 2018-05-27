@@ -1,13 +1,13 @@
 #include <EtherCard.h>
 
-static byte mac[] = {0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
-static byte ip[] = {192,168,0,20};
-byte Ethernet::buffer[700]; //MAC, IP, y tamaño de buffer para ENC28J60.
-
 #include <Wire.h> //Libreria I2C
 #include "SparkFunMPL3115A2.h" //Libreria MPL3115A2
 #include <SparkFunCCS811.h> //Libreria CCS811
 #include <DHT.h> //Libreria DHT11
+
+static byte mac[] = {0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
+static byte ip[] = {192,168,0,20};
+byte Ethernet::buffer[700]; //MAC, IP, y tamaño de buffer para ENC28J60.
 
 #define DHTPIN 4
 #define DHTTYPE DHT11
@@ -47,15 +47,15 @@ void setup() {
   pinMode(pinPluviometro, INPUT);
   attachInterrupt(digitalPinToInterrupt(pinAnemometro), viento, FALLING); //gatillo para medir velocidad de viento.
   attachInterrupt(digitalPinToInterrupt(pinPluviometro), lluvia, FALLING); //gatillo para medir precipitación.
-  
+
   pinMode(STATUSLED, OUTPUT);
-  
+
   Serial.begin(9600); //Inicializar comunicacion serial USB a 9600 bits por segundo.
   Serial.println("Comunicación serial inicializada exitosamente."); //Mensaje de control.
 
   Wire.begin(); //Inicializar bus I2C
   Serial.println("Bus I2C inicializado");
-  
+
   TempHum.begin(); //Iniciar mediciones para DHT11
   Serial.println("DHT11 inicializado");
 
@@ -72,7 +72,7 @@ void setup() {
     Serial.println( "ERROR: ENC28J60 no inicializado");
  else
    Serial.println("ENC28J60 inicializado");
- 
+
   if (!ether.staticSetup(ip))
     Serial.println("ERROR: IP no obtenida");
   else
@@ -89,19 +89,19 @@ void setup() {
 }
 
 static word homePage() {
-  
+
  BufferFiller bfill = ether.tcpOffset();
  bfill.emit_p(PSTR("HTTP/1.0 200 OK\r\n"
       "Content-Type: text/htmlrnPragma: no-cachernRefresh: 60\r\n\r\n"
       "<html><head><title>Estación Meteorológica</title></head>"
       "<body>"
       "<p>$D, $D, $D, $D, $D, $D, $L, $L</p>"
-      "</body></html>"      
+      "</body></html>"
       ),Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC); //Valores a transmitir.
-     
+
   return bfill.position(); //Página web. La verdad no tengo idea como funciona esto, lo copié desde naylampmechatronics.com y lo dejo ser.
 }
-  
+
 void loop() {
 
   Temperatura = TempHum.readTemperature(); //recoger temperatura y humedad de DHT11. Grados Celsius y % Relativo.
@@ -122,8 +122,8 @@ void loop() {
   }
 
   Presion = Barometro.readPressure(); //leer presión
-  
-  
+
+
   digitalWrite(STATUSLED, HIGH); //Parpadear el LED una vez de estado una vez para indicar el fin del muestreo de sensores.
   delay(100);
   digitalWrite(STATUSLED, LOW);
@@ -147,4 +147,3 @@ void lluvia() {
  cuentaVolcados++; //cada vez que el gatillo lluvia es llamado suma uno al cuenta volcados. el overflow se gatilla aproximadamente a los 1200km de precipitaciones, lo cual debería tomar unos 10k años.
  Precip = cuentaVolcados * 0.2794;
 }
-
