@@ -39,9 +39,9 @@ while True:
 
         Precip = PrecipRAW - PrecipInit #sumar las precipitaciones
 
-        cargarDB = ("""INSERT INTO datos (timestamp, temperatura, humedad, presion, energiauv, velviento, dirviento, precip, co2, tvoc)
-            VALUES (%f, %f, %f, %f, %f, %f, %f, %f, %f, %f)""",(curTime, Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC)) #cargar datos al servidor SQL.
-        SQL.cursor().execute(cargarDB)
+        cargarDB =  #cargar datos al servidor SQL.
+        SQL.cursor().execute("""INSERT INTO datos (timestamp, temperatura, humedad, presion, energiauv, velviento, dirviento, precip, co2, tvoc)
+            VALUES (%f, %f, %f, %f, %f, %f, %f, %f, %f, %f)""",(curTime, Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC))
         SQL.commit()
 	    print ("Valores cargados correctamente!")
         print (" ")
