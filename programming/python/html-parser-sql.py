@@ -33,17 +33,16 @@ while True:
         varsFloat = [float(i) for i in varsHTML] #convierte el texto a punto flotante.
         Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, PrecipRAW, CO2, TVOC = varsFloat #separa variables.
 
-	    curTime = time.time()
-	    print (curTime)
-	    print (varsFloat)
+        curTime = time.time()
+        print (curTime)
+        print (varsFloat) #toma la hora e imprime los valores y el timestamp.
 
         Precip = PrecipRAW - PrecipInit #sumar las precipitaciones
 
-        cargarDB =  #cargar datos al servidor SQL.
         SQL.cursor().execute("""INSERT INTO datos (timestamp, temperatura, humedad, presion, energiauv, velviento, dirviento, precip, co2, tvoc)
-            VALUES (%f, %f, %f, %f, %f, %f, %f, %f, %f, %f)""",(curTime, Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC))
-        SQL.commit()
-	    print ("Valores cargados correctamente!")
+            VALUES ('%f','%f','%f','%f','%f','%f','%f','%f','%f','%f');""",(curTime, Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC))
+        SQL.commit() #cargar los valores a la base de datos.
+        print ("Valores cargados correctamente!")
         print (" ")
 
         sleep(100)
