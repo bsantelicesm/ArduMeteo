@@ -9,7 +9,7 @@ import MySQLdb
 print("Estación Meteorológica SS.CC Manquehue")
 print("Copyright 2018 Benjamin Santelices")
 
-url = "file:///C:/Users/benja/Documents/GitHub/sscctiempo/programming/html/arduino-sample-output.htm" #dirección de estación meteorológica.
+url = "file:///sscctiempo/programming/html/arduino-sample-output.htm" #dirección de estación meteorológica.
 
 PrecipInit = 0 #valor inicial para precipitaciones para cuando parta el sketch.
 
@@ -28,13 +28,17 @@ while True:
          #separa los valores usando las comas como referencia.
         varsFloat = [float(i) for i in varsHTML] #convierte el texto a punto flotante.
         Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, PrecipRAW, CO2, TVOC = varsFloat #separa variables.
-        print (varsFloat)
+        
+	curTime = time.time()
+	print (curTime)
+	print (varsFloat)
 
         Precip = PrecipRAW - PrecipInit #sumar las precipitaciones
 
-        cargarDB = """INSERT INTO datos (Hora, Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC)
-            VALUES (time.time(), temperatura, humedad, presion, energiauv, velviento, dirviento, precip, co2, tvoc)""" #cargar datos al servidor SQL.
+        cargarDB = """INSERT INTO datos (timestamp, temperatura, humedad, presion, energiauv, velviento, dirviento, precip, co2, tvoc)
+            VALUES (curTime, Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC)""" #cargar datos al servidor SQL.
         SQL.cursor().execute(cargarDB)
         SQL.commit()
+	print ("Valores cargados correctamente!")
 
         sleep(100)
