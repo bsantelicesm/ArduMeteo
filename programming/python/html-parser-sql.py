@@ -15,11 +15,15 @@ PrecipInit = 0 #valor inicial para precipitaciones para cuando parta el sketch.
 
 SQL = MySQLdb.connect(host="localhost", user="root", passwd="manquehue", db="meteorologia") #conección al servidor mysql local.
 
+print("OK")
+print(" ")
+
 while True:
 
     while (time.time()) % 86400 == 0:
         Precip = 0 #Reiniciar valores de precipitación una vez al día.
         PrecipInit = PrecipRAW #tomar valor base
+        print("Valores de precipitación reiniciados.")
         sleep(100)
 
     while (time.time()) % 60 == 0: #repetir una vez por minuto
@@ -28,17 +32,18 @@ while True:
          #separa los valores usando las comas como referencia.
         varsFloat = [float(i) for i in varsHTML] #convierte el texto a punto flotante.
         Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, PrecipRAW, CO2, TVOC = varsFloat #separa variables.
-        
-	curTime = time.time()
-	print (curTime)
-	print (varsFloat)
+
+	    curTime = time.time()
+	    print (curTime)
+	    print (varsFloat)
 
         Precip = PrecipRAW - PrecipInit #sumar las precipitaciones
 
-        cargarDB = """INSERT INTO datos (timestamp, temperatura, humedad, presion, energiauv, velviento, dirviento, precip, co2, tvoc)
-            VALUES (curTime, Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC)""" #cargar datos al servidor SQL.
+        cargarDB = ("""INSERT INTO datos (timestamp, temperatura, humedad, presion, energiauv, velviento, dirviento, precip, co2, tvoc)
+            VALUES (%f, %f, %f, %f, %f, %f, %f, %f, %f, %f)""",(curTime, Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC)) #cargar datos al servidor SQL.
         SQL.cursor().execute(cargarDB)
         SQL.commit()
-	print ("Valores cargados correctamente!")
+	    print ("Valores cargados correctamente!")
+        print (" ")
 
         sleep(100)
