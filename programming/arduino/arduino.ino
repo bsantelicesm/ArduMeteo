@@ -95,7 +95,7 @@ static word homePage() {
       "Content-Type: text/htmlrnPragma: no-cachernRefresh: 60\r\n\r\n"
       "<html><head><title>Estación Meteorológica</title></head>"
       "<body>"
-      "<p>$D, $D, $D, $D, $D, $D, $L, $L</p>"
+      "<p>$D,$D,$D,$D,$D,$D,$L,$L</p>"
       "</body></html>"
       ),Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, Precip, CO2, TVOC); //Valores a transmitir.
 

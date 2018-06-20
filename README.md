@@ -32,7 +32,7 @@ Para recopilar todos estos datos, la estación posee un *Arduino Nano*, que reci
 
 ### Servidor
 
-El servidor utiliza  [Xubuntu 18.04 LTS](https://xubuntu.org/release/18-04/) como sistema operativo, utilizando LAMP (Linux Apache, MySQL, Python) Para recibir los datos y procesarlos con Python, generar una base de datos SQL con los datos, y generar una página web para mostrar todos los datos.
+El servidor utiliza  [Ubuntu Server 18.04 LTS](https://www.ubuntu.com/download/server?) como sistema operativo, utilizando LAMP (Linux Apache, MySQL, Python) Para recibir los datos y procesarlos con Python, generar una base de datos SQL con los datos, y generar una página web para mostrar todos los datos.
 
 ## ToDo
 
