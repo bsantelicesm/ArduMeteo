@@ -23,7 +23,7 @@ La estación meteorológica está basada alrededor la plataforma *Arduino*, con 
 * Presión Barométrica (hPa) 🡒 [MPL3115A2](/documentation/hojas_datos/MPL3115A2.pdf)
 * Dirección del Viento (°) 🡒 [Argent Data Systems Weather Assembly](documentation/hojas_datos/Pluviómetro, Anemómetro, Veleta.pdf)
 * Velocidad del Viento (km/h) 🡒 [Argent Data Systems Weather Assembly](documentation/hojas_datos/Pluviómetro, Anemómetro, Veleta.pdf)
-* Precipitaciones (mm/hr) 🡒 [Argent Data Systems Weather Assembly](documentation/hojas_datos/Pluviómetro, Anemómetro, Veleta.pdf)
+* Precipitaciones (mm/dia) 🡒 [Argent Data Systems Weather Assembly](documentation/hojas_datos/Pluviómetro, Anemómetro, Veleta.pdf)
 * Indice de Radiación UV 🡒 [GUVA-S12D](/documentation/hojas_datos/GUVA-S12D.pdf)
 * Concentración de CO2 (ppm) 🡒 [CCS811](/documentation/hojas_datos/CCS811.pdf)
 * Concentración de Compuestos Orgánicos Volátiles (ppb) 🡒 [CCS811](/documentation/hojas_datos/CCS811.pdf)
