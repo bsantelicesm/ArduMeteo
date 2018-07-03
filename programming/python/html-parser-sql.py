@@ -26,12 +26,10 @@ def RainReset():
     time.sleep(1)
 
  def FetchLoad():
-
     parsedText = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser") #Carga BS para iniciar el parseo.
     varsHTML = parsedText.find("p").get_text().strip().split(",") # busca el tag <p> y convierte el HTML a string.
     varsFloat = [float(i) for i in varsHTML] #convierte el texto a punto flotante.
     Temperatura, Humedad, Presion, EnergiaUV, VelViento, DirViento, PrecipRAW, CO2, TVOC = varsFloat #separa variables.
-
     print (varsFloat) #toma la hora e imprime los valores y el timestamp.
 
     Precip = PrecipRAW - PrecipInit #sumar las precipitaciones
@@ -41,8 +39,11 @@ def RainReset():
     SQL.commit() #cargar los valores a la base de datos.
     print ("Valores cargados correctamente!")
     print (" ")
-
     time.sleep(1)
 
 schedule.every().minute.do(FetchLoad)
 schedule.every().day.at("00:00").do(RainReset)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)

@@ -1,7 +1,6 @@
 #include <EtherCard.h>
-
 #include <Wire.h> //Libreria I2C
-#include "SparkFunMPL3115A2.h" //Libreria MPL3115A2
+#include <SparkFunMPL3115A2.h> //Libreria MPL3115A2
 #include <SparkFunCCS811.h> //Libreria CCS811
 #include <DHT.h> //Libreria DHT11
 
@@ -18,7 +17,11 @@ CCS811 CalidadAire(CCS811ADDR); //Define dirección e inicializa el sensor de ca
 
 MPL3115A2 Barometro; //Crear instancia de presion barometrica.
 
-#define STATUSLED 3 //Definir pin para el LED de estado.
+#define STATUSLED 4 //Definir pin para el LED de estado.
+#define pinAnemometro 2
+#define pinPluviometro 3
+#define pinVeleta A0
+#define pinUV A1
 
 const int valoresInternosViento[] = {786, 406, 461, 84, 84, 92, 66, 184, 127, 287, 244, 631, 600, 946, 827, 979, 702};
 const float cardinal[] = {0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5}; //Traducción de valores de veleta.
@@ -37,9 +40,6 @@ int Precip;
 float VelViento;
 int CO2;
 int TVOC; //Definir todas las variables a utilizar. Se hace en esta instancia porque de lo contrario la página web no sabe de que estamos hablando.
-
-int pinAnemometro = 2;
-int pinPluviometro = 3;
 
 void setup() {
 
