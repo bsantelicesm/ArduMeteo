@@ -25,7 +25,7 @@ def RainReset():
     print("Valores de precipitación reiniciados.")
     time.sleep(1)
 
- def FetchLoad():
+def FetchLoad():
     parsedText = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser") #Carga BS para iniciar el parseo.
     varsHTML = parsedText.find("p").get_text().strip().split(",") # busca el tag <p> y convierte el HTML a string.
     varsFloat = [float(i) for i in varsHTML] #convierte el texto a punto flotante.
