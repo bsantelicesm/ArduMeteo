@@ -1,8 +1,7 @@
-# Estación Meteorológica Colegio Sagrados Corazones de Manquehue
-Estación meteorológica de código abierto para educación
+# Estación meteorológica de código abierto para educación
 
 ## About
-Este proyecto tiene como objetivo detallar la construcción y el desarrollo de software para una estación meteorológica con fines educacionales, para ser utilizada tanto en educación primaria como secundaria. El sistema utiliza equipos e instrumentos de bajo costo, con el fin de desarrollar una estación que pueda ser implementada en cualquier establecimiento educacional a lo largo de todo Chile. En el caso de este repositorio en particular, la [documentación](/documentation/presentaciones_documentos) habla acerca de la implementación de este sistema en el colegio de los Sagrados Corazones de Manquehue, ubicado en Santiago.
+Este proyecto tiene como objetivo detallar la construcción y el desarrollo de software para una estación meteorológica con fines educacionales, para ser utilizada tanto en educación primaria como secundaria. El sistema utiliza equipos e instrumentos de bajo costo, con el fin de desarrollar una estación que pueda ser implementada en cualquier establecimiento educacional a lo largo de todo Chile.
 
 ## Objetivos
 
@@ -33,13 +32,3 @@ Para recopilar todos estos datos, la estación posee un *Arduino Nano*, que reci
 ### Servidor
 
 El servidor utiliza  [Ubuntu Server 18.04 LTS](https://www.ubuntu.com/download/server?) como sistema operativo, utilizando LAMP (Linux Apache, MySQL, Python) Para recibir los datos y procesarlos con Python, generar una base de datos SQL con los datos, y generar una página web para mostrar todos los datos.
-
-## ToDo
-
-- [x] Diseño de la estación y sistemas
-- [x] Programación
-- [x] Diseño de infraestructura, circuitos, y tarjetas
-- [ ] Prueba con equipos reales
-- [ ] Bugfix y QA
-- [ ] Instalación
-- [ ] Release
